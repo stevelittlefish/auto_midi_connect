@@ -46,7 +46,7 @@ if __name__ == '__main__':
     # Regular expressions used for parsing
     client_regex = re.compile(r'^client ([0-9]+): \'([^\']*)\'.*$')
     port_regex = re.compile(r'^\s*([0-9]+) \'([^\']*)\'.*$')
-    connecting_to_regex = re.compile(r'^\s*Connecting To: ([0-9]+:[0-9]+)$')
+    connecting_to_regex = re.compile(r'^\s*Connecting To: (.*)$')
     connecting_from_regex = re.compile(r'^\sConnected From:.*$')
 
     client_number = None
@@ -91,9 +91,11 @@ if __name__ == '__main__':
         connecting_to_match = connecting_to_regex.match(line)
         if connecting_to_match:
             connecting_from = '{}:{}'.format(client_number, port_number)
-            connecting_to = connecting_to_match.group(1)
-            log.debug('Existing connection {} -> {}'.format(connecting_from, connecting_to))
-            existing_connections.append((connecting_from, connecting_to))
+            connecting_to_str = connecting_to_match.group(1)
+            connecting_to_list = [s.strip() for s in connecting_to_str.split(',')]
+            for connecting_to in connecting_to_list:
+                log.debug('Existing connection {} -> {}'.format(connecting_from, connecting_to))
+                existing_connections.append((connecting_from, connecting_to))
 
             continue
 
