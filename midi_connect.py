@@ -130,5 +130,5 @@ if __name__ == '__main__':
 
                     output = map_process.stdout
                     if output:
-                        log.warn(output.decode())
+                        log.warning(output.decode())
         
